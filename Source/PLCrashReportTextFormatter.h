@@ -55,6 +55,9 @@ typedef enum {
     NSStringEncoding _stringEncoding;
 }
 
+//Get key string for calc crash report id
++ (NSString *)keyStringForCrashReport:(PLCrashReport *)report withTextFormat:(PLCrashReportTextFormat)textFormat;
+
 + (NSString *) stringValueForCrashReport: (PLCrashReport *) report withTextFormat: (PLCrashReportTextFormat) textFormat;
 
 - (id) initWithTextFormat: (PLCrashReportTextFormat) textFormat stringEncoding: (NSStringEncoding) stringEncoding;
