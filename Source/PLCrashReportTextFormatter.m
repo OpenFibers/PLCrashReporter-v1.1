@@ -152,14 +152,14 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
             }
         }
     }
-    
+
+    //Hardware model
     {
         NSString *hardwareModel = @"???";
         if (report.hasMachineInfo && report.machineInfo.modelName != nil)
+        {
             hardwareModel = report.machineInfo.modelName;
-        
-        [text appendFormat: @"Incident Identifier: TODO\n"];
-        [text appendFormat: @"CrashReporter Key:   TODO\n"];
+        }
         [text appendFormat: @"Hardware Model:      %@\n", hardwareModel];
     }
     
@@ -168,38 +168,18 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
         NSString *unknownString = @"???";
         
         NSString *processName = unknownString;
-        NSString *processId = unknownString;
-        NSString *processPath = unknownString;
-        NSString *parentProcessName = unknownString;
-        NSString *parentProcessId = unknownString;
-        
-        /* Process information was not available in earlier crash report versions */
-        if (report.hasProcessInfo) {
-            /* Process Name */
+        if (report.hasProcessInfo)
+        {
             if (report.processInfo.processName != nil)
+            {
                 processName = report.processInfo.processName;
-            
-            /* PID */
-            processId = [[NSNumber numberWithUnsignedInteger: report.processInfo.processID] stringValue];
-            
-            /* Process Path */
-            if (report.processInfo.processPath != nil)
-                processPath = report.processInfo.processPath;
-            
-            /* Parent Process Name */
-            if (report.processInfo.parentProcessName != nil)
-                parentProcessName = report.processInfo.parentProcessName;
-            
-            /* Parent Process ID */
-            parentProcessId = [[NSNumber numberWithUnsignedInteger: report.processInfo.parentProcessID] stringValue];
+            }
         }
         
-        [text appendFormat: @"Process:         %@ [%@]\n", processName, processId];
-        [text appendFormat: @"Path:            %@\n", processPath];
+        [text appendFormat: @"Process:         %@\n", processName];
         [text appendFormat: @"Identifier:      %@\n", report.applicationInfo.applicationIdentifier];
         [text appendFormat: @"Version:         %@\n", report.applicationInfo.applicationVersion];
         [text appendFormat: @"Code Type:       %@\n", codeType];
-        [text appendFormat: @"Parent Process:  %@ [%@]\n", parentProcessName, parentProcessId];
     }
     
     [text appendString: @"\n"];
@@ -208,24 +188,12 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
     {
         NSString *osBuild = @"???";
         if (report.systemInfo.operatingSystemBuild != nil)
+        {
             osBuild = report.systemInfo.operatingSystemBuild;
+        }
         
-        [text appendFormat: @"Date/Time:       %@\n", report.systemInfo.timestamp];
         [text appendFormat: @"OS Version:      %@ %@ (%@)\n", osName, report.systemInfo.operatingSystemVersion, osBuild];
         [text appendFormat: @"Report Version:  104\n"];
-    }
-    
-    [text appendString: @"\n"];
-    
-    /* Exception code */
-    [text appendFormat: @"Exception Type:  %@\n", report.signalInfo.name];
-    [text appendFormat: @"Exception Codes: %@ at 0x%" PRIx64 "\n", report.signalInfo.code, report.signalInfo.address];
-    
-    for (PLCrashReportThreadInfo *thread in report.threads) {
-        if (thread.crashed) {
-            [text appendFormat: @"Crashed Thread:  %ld\n", (long) thread.threadNumber];
-            break;
-        }
     }
     
     [text appendString: @"\n"];
