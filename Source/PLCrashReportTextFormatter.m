@@ -276,46 +276,6 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
         [text appendString: @"\n"];
     }
     
-    /* Registers */
-    if (crashed_thread != nil) {
-        [text appendFormat: @"Thread %ld crashed with %@ Thread State:\n", (long) crashed_thread.threadNumber, codeType];
-        
-        int regColumn = 0;
-        for (PLCrashReportRegisterInfo *reg in crashed_thread.registers) {
-            NSString *reg_fmt;
-            
-            /* Use 32-bit or 64-bit fixed width format for the register values */
-            if (lp64)
-                reg_fmt = @"%6s: 0x%016" PRIx64 " ";
-            else
-                reg_fmt = @"%6s: 0x%08" PRIx64 " ";
-            
-            /* Remap register names to match Apple's crash reports */
-            NSString *regName = reg.registerName;
-            if (report.machineInfo != nil && report.machineInfo.processorInfo.typeEncoding == PLCrashReportProcessorTypeEncodingMach) {
-                PLCrashReportProcessorInfo *pinfo = report.machineInfo.processorInfo;
-                cpu_type_t arch_type = pinfo.type & ~CPU_ARCH_MASK;
-                
-                /* Apple uses 'ip' rather than 'r12' on ARM */
-                if (arch_type == CPU_TYPE_ARM && [regName isEqual: @"r12"]) {
-                    regName = @"ip";
-                }
-            }
-            [text appendFormat: reg_fmt, [regName UTF8String], reg.registerValue];
-            
-            regColumn++;
-            if (regColumn == 4) {
-                [text appendString: @"\n"];
-                regColumn = 0;
-            }
-        }
-        
-        if (regColumn != 0)
-            [text appendString: @"\n"];
-        
-        [text appendString: @"\n"];
-    }
-    
     return text;
 }
 
