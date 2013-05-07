@@ -27,6 +27,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <CommonCrypto/CommonDigest.h>
 #import "PLCrashReportSystemInfo.h"
 #import "PLCrashReportMachineInfo.h"
 #import "PLCrashReportApplicationInfo.h"
@@ -107,6 +108,12 @@ typedef struct _PLCrashReportDecoder _PLCrashReportDecoder;
 - (id) initWithData: (NSData *) encodedData error: (NSError **) outError;
 
 - (PLCrashReportBinaryImageInfo *) imageForAddress: (uint64_t) address;
+
+/**
+ Calculate SHA1 string of crash key string to distinguish between different crash logs.
+ May use this as primary key to store crash log on server.
+ */
+- (NSString *)crashKey;
 
 /**
  * System information.
