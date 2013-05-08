@@ -109,11 +109,20 @@ typedef struct _PLCrashReportDecoder _PLCrashReportDecoder;
 
 - (PLCrashReportBinaryImageInfo *) imageForAddress: (uint64_t) address;
 
+
+typedef enum{
+    PLCrashReportFingerPrintOptionDefault = 0,
+    PLCrashReportFingerPrintOptionIgnoreDeviceInfo = 1,
+    PLCrashReportFingerPrintOptionIgnoreOSVersion = 1 << 1,
+    PLCrashReportFingerPrintOptionIgnoreAppVersion = 1 << 2,
+}PLCrashReportFingerPrintOption;
+
 /**
  Calculate SHA1 string of crash key string to distinguish between different crash logs.
  May use this as primary key to store crash log on server.
  */
-- (NSString *)crashKey;
+- (NSString *)fingerPrint;
+- (NSString *)fingerPrintWithOption:(PLCrashReportFingerPrintOption)option;
 
 /**
  * System information.

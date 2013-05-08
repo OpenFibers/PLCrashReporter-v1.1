@@ -187,11 +187,18 @@ error:
     return nil;
 }
 
-- (NSString *)crashKey
+
+- (NSString *)fingerPrint
+{
+    return [self fingerPrintWithOption:PLCrashReportFingerPrintOptionDefault];
+}
+
+- (NSString *)fingerPrintWithOption:(PLCrashReportFingerPrintOption)option
 {
     NSString *crashKeyString = [PLCrashReportTextFormatter
                                 keyStringForCrashReport:self
-                                withTextFormat:PLCrashReportTextFormatiOS];
+                                withTextFormat:PLCrashReportTextFormatiOS
+                                option:option];
     NSString *sha1String = [PLCrashReport SHA1HashStringWithPlainText:crashKeyString];
     return sha1String;
 }
