@@ -57,7 +57,9 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
  */
 @implementation PLCrashReportTextFormatter
 
-+ (NSString *)keyStringForCrashReport:(PLCrashReport *)report withTextFormat:(PLCrashReportTextFormat)textFormat
++ (NSString *)keyStringForCrashReport:(PLCrashReport *)report
+                       withTextFormat:(PLCrashReportTextFormat)textFormat
+                               option:(PLCrashReportFormatterKeyStringOption)option
 {
 	NSMutableString* text = [NSMutableString string];
 	boolean_t lp64 = true; // quiesce GCC uninitialized value warning
@@ -154,6 +156,7 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
     }
 
     //Hardware model
+    if (!(option | PLCrashReportFormatterKeyStringOptionIgnoreDeviceInfo))
     {
         NSString *hardwareModel = @"???";
         if (report.hasMachineInfo && report.machineInfo.modelName != nil)
@@ -178,7 +181,11 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
         
         [text appendFormat: @"Process:         %@\n", processName];
         [text appendFormat: @"Identifier:      %@\n", report.applicationInfo.applicationIdentifier];
-        [text appendFormat: @"Version:         %@\n", report.applicationInfo.applicationVersion];
+        
+        if (!(option | PLCrashReportFormatterKeyStringOptionIgnoreAppVersion))
+        {
+            [text appendFormat: @"Version:         %@\n", report.applicationInfo.applicationVersion];
+        }
         [text appendFormat: @"Code Type:       %@\n", codeType];
     }
     
@@ -191,8 +198,10 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
         {
             osBuild = report.systemInfo.operatingSystemBuild;
         }
-        
-        [text appendFormat: @"OS Version:      %@ %@ (%@)\n", osName, report.systemInfo.operatingSystemVersion, osBuild];
+        if (!(option | PLCrashReportFormatterKeyStringOptionIgnoreOSVersion))
+        {
+            [text appendFormat: @"OS Version:      %@ %@ (%@)\n", osName, report.systemInfo.operatingSystemVersion, osBuild];
+        }
         [text appendFormat: @"Report Version:  104\n"];
     }
     
