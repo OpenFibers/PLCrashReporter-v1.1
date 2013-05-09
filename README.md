@@ -5,7 +5,7 @@ Forked from google code https://code.google.com/p/plcrashreporter/ 1.1-rc2 by Pl
 
 #Difference from official version
 
-Added method to get key string from crash log:
+***Added method to get key string from crash log:***
 
 ```
 @interface PLCrashReportTextFormatter : NSObject <PLCrashReportFormatter>
@@ -17,7 +17,7 @@ Added method to get key string from crash log:
 ...
 @end
 ```
-Added method to get finger print of crash log
+***Added method to get finger print of crash log***
 
 ```
 @interface PLCrashReport : NSObject
@@ -28,6 +28,19 @@ Added method to get finger print of crash log
  */
 - (NSString *)fingerPrint;
 - (NSString *)fingerPrintWithOption:(PLCrashReportFingerPrintOption)option;
+...
+@end
+```
+
+***Added method to export crash report to text***
+
+```
+@interface PLCrashReport : NSObject
+...
+/*
+ Export crash report to text in apple crash log format.
+ */
+- (NSString *)exportCrashReportString;
 ...
 @end
 ```

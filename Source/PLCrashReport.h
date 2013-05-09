@@ -124,6 +124,11 @@ typedef enum{
 - (NSString *)fingerPrint;
 - (NSString *)fingerPrintWithOption:(PLCrashReportFingerPrintOption)option;
 
+/*
+ Export crash report to text in apple crash log format.
+ */
+- (NSString *)exportCrashReportString;
+
 /**
  * System information.
  */

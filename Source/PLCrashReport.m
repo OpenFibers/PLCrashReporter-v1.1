@@ -203,6 +203,12 @@ error:
     return sha1String;
 }
 
+- (NSString *)exportCrashReportString
+{
+    NSString *crashReportString = [PLCrashReportTextFormatter stringValueForCrashReport:self withTextFormat:PLCrashReportTextFormatiOS];
+    return crashReportString;
+}
+
 // property getter. Returns YES if machine information is available.
 - (BOOL) hasMachineInfo {
     if (_machineInfo != nil)
