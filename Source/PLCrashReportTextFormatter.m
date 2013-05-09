@@ -207,6 +207,10 @@ NSInteger binaryImageSort(id binary1, id binary2, void *context);
     
     [text appendString: @"\n"];
     
+    /* Exception code */
+    [text appendFormat: @"Exception Type:  %@\n", report.signalInfo.name];
+    [text appendFormat: @"Exception Codes: %@\n", report.signalInfo.code];
+    
     /* Threads */
     PLCrashReportThreadInfo *crashed_thread = nil;
     for (PLCrashReportThreadInfo *thread in report.threads)
